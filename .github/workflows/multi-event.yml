@@ -1,0 +1,50 @@
+name: "Multi Event Pipline / Workflow"
+
+on:
+    push:
+        branches:
+            - master
+            - test
+    
+    pull_request:
+        branches:
+            - master
+        types:
+            - opened
+            - closed
+        
+    schedule:
+        - cron: "0 10 * * 2,4"
+
+    workflow_dispatch:
+
+jobs:
+    on-push:
+        runs-on: ubuntu-latest
+        if: github.event_name == 'push'
+        steps:
+            - name: "Running on master/test"
+              run: echo "Running on master/test"
+
+    on-pull-request:
+        runs-on: ubuntu-lastest
+        if: github.event_name == 'pull_request'
+        steps:
+            - name: "Running on pull request"
+              run: echo "Running on pull request"
+
+    schedule:
+        runs-on: ubuntu-latest
+        if: github.event_name == 'schedule'
+        steps:
+            - name: "Running on schedule"
+              run: echo "Running on schedule"
+    
+    workflow-dispatch:
+        runs-on: ubuntu-latest
+        if: github.event_name == 'workflow_dispatch'
+        steps:
+            - name: "Running on workflow dispatch"
+              run: echo "Running on workflow dispatch"
+
+    
